@@ -1,0 +1,26 @@
+name: Daily Commit
+
+on:
+  schedule:
+    - cron: '0 4 * * *'  # Runs every day at 9:30 AM IST
+  workflow_dispatch:       # Allows manual run
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Make a dummy change (update date in a file)
+        run: |
+          echo "Last commit: $(date)" > last-commit.txt
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'Your GitHub Username'
+          git config --global user.email 'you@example.com'
+          git add .
+          git commit -m "chore: daily commit $(date)"
+          git push
