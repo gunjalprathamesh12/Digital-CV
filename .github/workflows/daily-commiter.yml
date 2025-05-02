@@ -1,0 +1,23 @@
+name: Daily Commit
+
+on:
+  schedule:
+    - cron: '30 10 * * *'  # Runs daily at 10:30 AM UTC
+  workflow_dispatch:       # Allows manual trigger
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Make a dummy commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          date >> daily.txt
+          git add daily.txt
+          git commit -m "Daily commit at 10:30 AM"
+          git push
